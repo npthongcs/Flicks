@@ -1,6 +1,5 @@
 package com.example.flicks
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -12,6 +11,7 @@ import com.example.flicks.databinding.MovieItemBinding
 
 class MovieAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mMovie = ArrayList<Movie>()
+    var movieOnClickListener: MovieOnClickListener? = null
 
     fun setDataList(data: ArrayList<Movie>){
         this.mMovie.addAll(data)
@@ -32,8 +32,22 @@ class MovieAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        return if (viewType==1) ViewHolder(MovieItemBinding.inflate(inflater))
-            else ViewHolder2(MovieItem2Binding.inflate(inflater))
+        return if (viewType==1) ViewHolder(MovieItemBinding.inflate(inflater)).apply {
+            itemView.setOnClickListener {
+                this@MovieAdapter.movieOnClickListener?.onItemClick(
+                    mMovie[adapterPosition],
+                    adapterPosition
+                )
+            }
+        }
+            else ViewHolder2(MovieItem2Binding.inflate(inflater)).apply {
+            itemView.setOnClickListener{
+                this@MovieAdapter.movieOnClickListener?.onItemClick(
+                    mMovie[adapterPosition],
+                    adapterPosition
+                )
+            }
+        }
 
     }
 
@@ -52,13 +66,17 @@ class MovieAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return if (mMovie[position].vote_average>=7.5) -1 else 1 // -1 --> backdrop_path
     }
 
+    fun setOnCallBackListener(movieOnClickListener: MovieOnClickListener){
+        this.movieOnClickListener = movieOnClickListener
+    }
+
     companion object{
         @JvmStatic
         @BindingAdapter("loadImage")
-        fun loadImage(poster_image: ImageView, url: String){
+        fun loadImage(poster_image: ImageView, url: String?){
             Glide.with(poster_image)
                 .load("https://image.tmdb.org/t/p/w500${url}")
-                .override(600,800)
+                .override(500,700)
                 .fitCenter()
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_background)
@@ -67,15 +85,14 @@ class MovieAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         @JvmStatic
         @BindingAdapter("loadBackdrop")
-        fun loadBackdrop(backdropImage: ImageView, url: String){
+        fun loadBackdrop(backdropImage: ImageView, url: String?){
             Glide.with(backdropImage)
                 .load("https://image.tmdb.org/t/p/w500${url}")
-                .override(1400,800)
+                .override(1050,800)
                 .fitCenter()
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_background)
                 .into(backdropImage)
         }
     }
-
 }

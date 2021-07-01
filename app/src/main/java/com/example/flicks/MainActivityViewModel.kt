@@ -9,25 +9,9 @@ import retrofit2.Response
 
 class MainActivityViewModel : ViewModel() {
     var movieNowPlayingData: MutableLiveData<NowPlayingMovie> = MutableLiveData()
-    private var movieAdapter: MovieAdapter = MovieAdapter()
-    var itemCount = 0
 
     fun getMovieNowPlayingDataObserver() : MutableLiveData<NowPlayingMovie>{
         return movieNowPlayingData
-    }
-
-    fun getAdapter() : MovieAdapter{
-        return movieAdapter
-    }
-
-    fun getItemSize(): Int{
-        return itemCount
-    }
-
-    fun setAdapterData(data: ArrayList<Movie>){
-        movieAdapter.setDataList(data)
-        itemCount = movieAdapter.itemCount
-        movieAdapter.notifyDataSetChanged()
     }
 
     fun makeAPICall(key: String, page: Int){
