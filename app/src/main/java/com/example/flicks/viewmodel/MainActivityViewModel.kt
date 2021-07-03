@@ -1,8 +1,10 @@
-package com.example.flicks
+package com.example.flicks.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.flicks.ApiService
+import com.example.flicks.RetroInstance
+import com.example.flicks.model.NowPlayingMovie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

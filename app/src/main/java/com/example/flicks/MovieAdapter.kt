@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.flicks.databinding.MovieItem2Binding
 import com.example.flicks.databinding.MovieItemBinding
+import com.example.flicks.model.Movie
 
 class MovieAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mMovie = ArrayList<Movie>()
