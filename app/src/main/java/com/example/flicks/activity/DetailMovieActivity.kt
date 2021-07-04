@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flicks.ApiService
 import com.example.flicks.R
@@ -23,6 +24,7 @@ class DetailMovieActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     var listYoutube: ArrayList<Youtube> = ArrayList()
     var trailer: Trailer = Trailer(listYoutube)
     var movie: Movie? = null
+    var isHave = false
     private var voteAverage: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +58,8 @@ class DetailMovieActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
             override fun onResponse(call: Call<Trailer>, response: Response<Trailer>) {
                 if (response.isSuccessful){
                     trailer = response.body()!!
+                    Log.d("trailer",trailer.toString())
+                    isHave = trailer.listYoutube.isNotEmpty()
                     loadVideo()
                 } else {
                 }
@@ -78,12 +82,14 @@ class DetailMovieActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         p1: YouTubePlayer?,
         p2: Boolean
     ) {
-        if (!p2){
+        if (!p2 && isHave){
             if (voteAverage>=7.5) {
                 p1?.loadVideo(trailer.listYoutube[0].source)
             } else {
                 p1?.cueVideo(trailer.listYoutube[0].source)
             }
+        } else {
+            Toast.makeText(this,"Not trailer",Toast.LENGTH_SHORT).show()
         }
     }
 

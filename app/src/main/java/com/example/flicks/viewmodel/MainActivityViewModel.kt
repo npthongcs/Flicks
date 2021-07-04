@@ -27,7 +27,6 @@ class MainActivityViewModel : ViewModel() {
             override fun onResponse(call: Call<NowPlayingMovie>, response: Response<NowPlayingMovie>) {
                 if (response.isSuccessful){
                     response.body()?.let { lMovie.addAll(it.listMovie) }
-                    //Log.d("model view",response.body()?.listMovie.toString())
                     movieNowPlayingData.postValue(response.body())
                 } else {
                     movieNowPlayingData.postValue(null)

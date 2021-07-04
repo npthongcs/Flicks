@@ -20,6 +20,8 @@ import com.example.flicks.databinding.ActivityMainBinding
 import com.example.flicks.model.Movie
 import com.example.flicks.model.NowPlayingMovie
 import com.example.flicks.viewmodel.MainActivityViewModel
+import java.util.*
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(), MovieOnClickListener {
 
@@ -28,7 +30,10 @@ class MainActivity : AppCompatActivity(), MovieOnClickListener {
     private var pageCount = 1
     var isLoad = false
     private var viewModel: MainActivityViewModel = MainActivityViewModel()
-    var lMovie: ArrayList<NowPlayingMovie> = ArrayList()
+
+    companion object{
+        const val keyAPI = "c7e5ae6c59fbe02f5481d6c5d812a701"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +44,23 @@ class MainActivity : AppCompatActivity(), MovieOnClickListener {
             Log.d("instance page",pageCount.toString())
         } else {
             makeApiCall()
-            viewModel.makeAPICall("c7e5ae6c59fbe02f5481d6c5d812a701",pageCount)
+            viewModel.makeAPICall(MainActivity.keyAPI,pageCount)
         }
 
         setupBinding(viewModel)
         initScrollListener(viewModel)
         movieAdapter.setOnCallBackListener(this)
+
+        binding.swipeContainer.setOnRefreshListener {
+            binding.swipeContainer.isRefreshing = false
+            viewModel.lMovie.clear()
+            pageCount = Random.nextInt(1,10)
+            Log.d("page refresh",pageCount.toString())
+            viewModel.makeAPICall(MainActivity.keyAPI,pageCount)
+            initScrollListener(viewModel)
+            movieAdapter.setOnCallBackListener(this)
+        }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -63,7 +79,7 @@ class MainActivity : AppCompatActivity(), MovieOnClickListener {
                         isLoad = true
                         pageCount += 1
                         Log.d("page in scroll",pageCount.toString())
-                        viewModel.makeAPICall("c7e5ae6c59fbe02f5481d6c5d812a701",pageCount)
+                        viewModel.makeAPICall(MainActivity.keyAPI,pageCount)
                     }
                 }
             }

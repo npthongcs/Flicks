@@ -6,4 +6,4 @@ data class Trailer(
     @SerializedName("youtube")
     val listYoutube: ArrayList<Youtube>
     )
-data class Youtube(val name: String, val source: String)
+data class Youtube(val name: String, var source: String)

@@ -6,6 +6,8 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.flicks.databinding.MovieItem2Binding
 import com.example.flicks.databinding.MovieItemBinding
 import com.example.flicks.model.Movie
@@ -77,8 +79,8 @@ class MovieAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun loadImage(poster_image: ImageView, url: String?){
             Glide.with(poster_image)
                 .load("https://image.tmdb.org/t/p/w500${url}")
+                .transform(RoundedCorners(30),CenterInside())
                 .override(500,700)
-                .fitCenter()
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_background)
                 .into(poster_image)
@@ -90,7 +92,7 @@ class MovieAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Glide.with(backdropImage)
                 .load("https://image.tmdb.org/t/p/w500${url}")
                 .override(1050,800)
-                .fitCenter()
+                .transform(RoundedCorners(30),CenterInside())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_background)
                 .into(backdropImage)

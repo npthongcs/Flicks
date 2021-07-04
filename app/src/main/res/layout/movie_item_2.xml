@@ -17,12 +17,22 @@
             android:id="@+id/backdropImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:loadBackdrop="@{movie.backdrop_path}"
             tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            app:layout_constraintBottom_toBottomOf="@+id/backdropImage"
+            app:layout_constraintEnd_toEndOf="@+id/backdropImage"
+            app:layout_constraintStart_toStartOf="@+id/backdropImage"
+            app:layout_constraintTop_toTopOf="@+id/backdropImage"
+            app:srcCompat="@drawable/ic_overplay_white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

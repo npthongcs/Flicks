@@ -46,5 +46,15 @@
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/backdropImage"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/backdropImage"
+            app:layout_constraintStart_toStartOf="@+id/backdropImage"
+            app:layout_constraintTop_toTopOf="@+id/backdropImage"
+            app:srcCompat="@drawable/ic_overplay_white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
