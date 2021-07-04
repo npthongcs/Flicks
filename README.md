@@ -1,4 +1,5 @@
 # Flicks - Internship - Week #1
+#Author: Anderson
 
 1. Portrait
 
