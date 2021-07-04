@@ -3,6 +3,7 @@ package com.example.flicks.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flicks.ApiService
@@ -22,6 +23,7 @@ class DetailMovieActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
     var listYoutube: ArrayList<Youtube> = ArrayList()
     var trailer: Trailer = Trailer(listYoutube)
     var movie: Movie? = null
+    private var voteAverage: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,14 @@ class DetailMovieActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         titleMovie.text = movie?.title
         dateRelease.text = "Release date: ${movie?.release_date}"
         overview.text = movie?.overview
+        voteAverage = movie?.vote_average!!
         movie?.id?.let { makeAPICall(it,"c7e5ae6c59fbe02f5481d6c5d812a701") }
+        setRatingBar()
+    }
+
+    private fun setRatingBar() {
+        val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
+        ratingBar.rating = (voteAverage/2).toFloat()
     }
 
     private fun makeAPICall(id: Int, key:String){
@@ -59,7 +68,6 @@ class DetailMovieActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
 
 
     fun loadVideo(){
-
         Log.d("list youtube", trailer.listYoutube.toString())
         val youtubePlayer = findViewById<YouTubePlayerView>(R.id.youtubePlayer)
         youtubePlayer.initialize("AIzaSyDvQ4aaFXHH7yA9fIMCQocMozomOacvehk",this)
@@ -71,7 +79,11 @@ class DetailMovieActivity : YouTubeBaseActivity(), YouTubePlayer.OnInitializedLi
         p2: Boolean
     ) {
         if (!p2){
-            p1?.cueVideo(trailer.listYoutube[0].source)
+            if (voteAverage>=7.5) {
+                p1?.loadVideo(trailer.listYoutube[0].source)
+            } else {
+                p1?.cueVideo(trailer.listYoutube[0].source)
+            }
         }
     }
 

@@ -27,19 +27,22 @@ class MainActivity : AppCompatActivity(), MovieOnClickListener {
     private val movieAdapter: MovieAdapter = MovieAdapter()
     private var pageCount = 1
     var isLoad = false
+    private var viewModel: MainActivityViewModel = MainActivityViewModel()
+    var lMovie: ArrayList<NowPlayingMovie> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState!=null){
             pageCount = savedInstanceState.getInt("NUM_PAGE")
+            makeApiCall()
             Log.d("instance page",pageCount.toString())
+        } else {
+            makeApiCall()
+            viewModel.makeAPICall("c7e5ae6c59fbe02f5481d6c5d812a701",pageCount)
         }
 
-        val viewModel = makeApiCall()
-        viewModel.makeAPICall("c7e5ae6c59fbe02f5481d6c5d812a701",pageCount)
         setupBinding(viewModel)
-
         initScrollListener(viewModel)
         movieAdapter.setOnCallBackListener(this)
     }
@@ -61,7 +64,6 @@ class MainActivity : AppCompatActivity(), MovieOnClickListener {
                         pageCount += 1
                         Log.d("page in scroll",pageCount.toString())
                         viewModel.makeAPICall("c7e5ae6c59fbe02f5481d6c5d812a701",pageCount)
-                        isLoad = false
                     }
                 }
             }
@@ -79,18 +81,18 @@ class MainActivity : AppCompatActivity(), MovieOnClickListener {
         }
     }
 
-    private fun makeApiCall() : MainActivityViewModel {
-        val viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+    private fun makeApiCall(){
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         viewModel.getMovieNowPlayingDataObserver().observe(this, Observer<NowPlayingMovie> {
-            Log.d("message","Received view model, pageCount $pageCount")
             if (it!=null) {
-                movieAdapter.setDataList(it.listMovie)
+                movieAdapter.setDataList(viewModel.lMovie)
                 movieAdapter.notifyDataSetChanged()
+                isLoad = false
             } else {
                 Log.d("error","MakeApiCall")
             }
         })
-        return viewModel
+
     }
 
     override fun onItemClick(data: Movie, position: Int) {
@@ -100,4 +102,5 @@ class MainActivity : AppCompatActivity(), MovieOnClickListener {
         startActivity(i)
     }
 }
+
 

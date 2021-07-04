@@ -15,7 +15,7 @@ class MovieAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var movieOnClickListener: MovieOnClickListener? = null
 
     fun setDataList(data: ArrayList<Movie>){
-        this.mMovie.addAll(data)
+        this.mMovie = data
     }
 
     inner class ViewHolder (private val binding: MovieItemBinding): RecyclerView.ViewHolder(binding.root) {
